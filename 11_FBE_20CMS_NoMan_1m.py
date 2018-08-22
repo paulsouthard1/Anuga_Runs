@@ -15,18 +15,20 @@ anuga.asc2dem('C://Users//ps29626//Desktop//NewAnugaRun//11_fbe_c.asc', use_cach
 # Create DEM from asc data
 anuga.dem2pts('11_fbe_c.dem', use_cache=False, 
               verbose=True)
+# # Create DEM from asc data
+# anuga.asc2dem('11f3.asc', use_cache=False, verbose=True)
 
+# # Create DEM from asc data
+# anuga.dem2pts('11f3.dem', use_cache=False, 
+#               verbose=True)
 
 # In[ ]:
 
-
 bounding_polygon = anuga.read_polygon('channel.csv')
 
+
 domain = anuga.create_domain_from_regions(bounding_polygon,
-                                    boundary_tags={'top': [0],
-                                                   'right': [1],
-                                                   'bottom': [2],
-                                                   'left': [3]},
+									boundary_tags={'exterior': [1]},
                                     maximum_triangle_area=1,
                                     mesh_filename='11f.msh',
                                     use_cache=False,
@@ -52,7 +54,7 @@ domain.set_quantity('stage',expression='elevation')
 #Define and set boundaries
 Br = anuga.Reflective_boundary(domain)      # Solid reflective wall
 Bt = anuga.Transmissive_boundary(domain)    # Continue all values on boundary
-domain.set_boundary({'left': Br, 'right': Bt, 'top': Br, 'bottom': Br})
+domain.set_boundary({'exterior': Bt})
 
 # Setup inlet flow
 center = (538416.0, 4190718.0)
